@@ -128,6 +128,7 @@ struct DetalleCerveceriaView: View {
             let favoritos = try modelContext.fetch(descriptor)
             if let favorito = favoritos.first {
                 modelContext.delete(favorito)
+                try modelContext.save()
                 esFavorito = false
             } else {
                 let nuevoFavorito = Favorito(
@@ -138,6 +139,7 @@ struct DetalleCerveceriaView: View {
                     estado: cerveceria.estado
                 )
                 modelContext.insert(nuevoFavorito)
+                try modelContext.save()
                 esFavorito = true
             }
         } catch {
