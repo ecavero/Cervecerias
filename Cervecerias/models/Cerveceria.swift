@@ -23,6 +23,7 @@ struct Cerveceria: Identifiable, Codable {
         case direccion_1 = "address_1" 
         case direccion_2 = "address_2" 
         case direccion_3 = "address_3" 
+        case estado = "state"
     }
 }
 
