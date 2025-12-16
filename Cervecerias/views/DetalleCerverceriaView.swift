@@ -122,25 +122,38 @@ struct DetalleCerveceriaView: View {
     }
 
     private func toggleFavorito() {
-        let contexto = modelContext
-        if esFavorito {
-            if let favorito = try? contexto.fetch(Favorito.self).first(where: { $0.id == cerveceria.id }) {
-                contexto.delete(favorito)
+        do {
+            let predicate = #Predicate<Favorito> { $0.id == cerveceria.id}
+            let descriptor = FetchDescriptor<Favorito>(predicate: predicate)
+            let favoritos = try modelContext.fetch(descriptor)
+            if let favorito = favoritos.first {
+                modelContext.delete(favorito)
+                esFavorito = false
+            } else {
+                let nuevoFavorito = Favorito(
+                    id: cerveceria.id,
+                    nombre: cerveceria.nombre,
+                    tipo: cerveceria.tipo,
+                    direccion: cerveceria.direccion_1 ?? "",
+                    estado: cerveceria.estado
+                )
+                modelContext.insert(nuevoFavorito)
+                esFavorito = true
             }
-        } else {
-            let nuevoFavorito = Favorito(id: cerveceria.id, nombre: cerveceria.nombre, tipo: cerveceria.tipo,
-                                         direccion: cerveceria.direccion_1 ?? "", estado: cerveceria.estado)
-            contexto.insert(nuevoFavorito)
+        } catch {
+            print("Error al grabar favorito: \(error)")
         }
-        esFavorito.toggle()
     }
 
     private func verificarFavorito() {
-        let contexto = modelContext
-        if let favorito = try? contexto.fetch(Favorito.self).first(where: {$0.id == cerveceria.id}) {
-            esFavorito = true
-        } else {
-            esFavorito = false
+        do {
+            let predicate = #Predicate<Favorito> {$0.id == cerveceria.id }
+            let descriptor = FetchDescriptor<Favorito>(predicate: predicate)
+            let favoritos = try modelContext.fetch(descriptor)
+            esFavorito = !favoritos.isEmpty
+        } catch {
+            print("Error al verificar favorito: \(error)")
         }
     }
 }
+
