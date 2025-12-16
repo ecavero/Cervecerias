@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 @Model
 class Favorito {
-    @Attribute(.primaryKey) var id: String
+    @Attribute(.unique) var id: String
     var nombre: String
     var tipo: String
     var direccion: String

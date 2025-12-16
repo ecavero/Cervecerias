@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DetalleCerveceriaView: View {
     let cerveceria: Cerveceria
@@ -13,6 +14,8 @@ struct DetalleCerveceriaView: View {
     @State private var isLoading = true
     @State private var errorMessage: String?
     @State private var esFavorito: Bool = false
+    
+    @Environment(\.modelContext) var modelContext
     
     var body: some View {
         NavigationView {
@@ -60,7 +63,7 @@ struct DetalleCerveceriaView: View {
                 .navigationTitle("Detalles")
                 .toolbar {
                     Button(action: {
-                        toggleFavoritos()
+                        toggleFavorito()
                     }) {
                         Image(systemName: esFavorito ? "heart.fill" : "heart")
                             .foregroundColor(esFavorito ? .red : .gray)
@@ -119,9 +122,9 @@ struct DetalleCerveceriaView: View {
     }
 
     private func toggleFavorito() {
-        let contexto = ModelContext()
+        let contexto = modelContext
         if esFavorito {
-            if let favorito = try? contexto.fetch(Favorito.self).first(where: {$0.id == cerveceria.id }) {
+            if let favorito = try? contexto.fetch(Favorito.self).first(where: { $0.id == cerveceria.id }) {
                 contexto.delete(favorito)
             }
         } else {
@@ -133,7 +136,7 @@ struct DetalleCerveceriaView: View {
     }
 
     private func verificarFavorito() {
-        let contexto = ModelContext()
+        let contexto = modelContext
         if let favorito = try? contexto.fetch(Favorito.self).first(where: {$0.id == cerveceria.id}) {
             esFavorito = true
         } else {
