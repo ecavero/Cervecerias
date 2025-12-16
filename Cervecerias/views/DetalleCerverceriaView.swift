@@ -12,6 +12,7 @@ struct DetalleCerveceriaView: View {
     @State private var detalleCerveceria: DetalleCerveceria?
     @State private var isLoading = true
     @State private var errorMessage: String?
+    @State private var esFavorito: Bool = false
     
     var body: some View {
         NavigationView {
@@ -57,6 +58,14 @@ struct DetalleCerveceriaView: View {
                     .padding()
                 }
                 .navigationTitle("Detalles")
+                .toolbar {
+                    Button(action: {
+                        toggleFavoritos()
+                    }) {
+                        Image(systemName: esFavorito ? "heart.fill" : "heart")
+                            .foregroundColor(esFavorito ? .red : .gray)
+                    }
+                }
             } else if let error = errorMessage {
                 Text("Error: \(error)")
                     .foregroundColor(.red)
@@ -65,6 +74,7 @@ struct DetalleCerveceriaView: View {
         }
         .onAppear {
             cargarDetalle()
+            verificarFavorito()
         }
     }
     
@@ -106,5 +116,28 @@ struct DetalleCerveceriaView: View {
                 }
             }
         }.resume()
+    }
+
+    private func toggleFavorito() {
+        let contexto = ModelContext()
+        if esFavorito {
+            if let favorito = try? contexto.fetch(Favorito.self).first(where: {$0.id == cerveceria.id }) {
+                contexto.delete(favorito)
+            }
+        } else {
+            let nuevoFavorito = Favorito(id: cerveceria.id, nombre: cerveceria.nombre, tipo: cerveceria.tipo,
+                                         direccion: cerveceria.direccion_1 ?? "", estado: cerveceria.estado)
+            contexto.insert(nuevoFavorito)
+        }
+        esFavorito.toggle()
+    }
+
+    private func verificarFavorito() {
+        let contexto = ModelContext()
+        if let favorito = try? contexto.fetch(Favorito.self).first(where: {$0.id == cerveceria.id}) {
+            esFavorito = true
+        } else {
+            esFavorito = false
+        }
     }
 }
