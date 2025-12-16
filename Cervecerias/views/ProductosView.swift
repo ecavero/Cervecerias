@@ -34,21 +34,24 @@ struct ProductosView: View {
                 }
                 
                 // Lista de cervecerías
-                List(viewModel.cervecerias) { cerveceria in
-                    NavigationLink(destination: DetalleCerveceriaView(cerveceria: cerveceria)) {
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text(cerveceria.nombre)
-                                    .font(.headline)
-                                Text(cerveceria.tipo)
-                                    .font(.subheadline)
-                                Text(cerveceria.direccion)
-                                    .font(.subheadline)
-                                Text(cerveceria.estado)
-                                    .font(.subheadline)
+                List{ 
+                    ForEach(viewModel.$cervecerias) { cerveceria in
+                        NavigationLink(destination: DetalleCerveceriaView(cerveceria: cerveceria)) {
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text(cerveceria.nombre)
+                                        .font(.headline)
+                                    Text(cerveceria.tipo)
+                                        .font(.subheadline)
+                                    Text(cerveceria.direccion)
+                                        .font(.subheadline)
+                                    Text(cerveceria.estado)
+                                        .font(.subheadline)
+                                }
                             }
                         }
                     }
+                    
                 }
             }
             .navigationTitle("Cervecerías")
