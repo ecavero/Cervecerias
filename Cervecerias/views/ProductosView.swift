@@ -15,16 +15,17 @@ struct ProductosView: View {
     var body: some View {
         NavigationView {
             VStack {
-                // Filtro de tipos
+                
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         ForEach(viewModel.tipos, id: \.self) { tipo in
                             Button(action: {
                                 viewModel.filtrarPorTipo(tipo)
                             }) {
+                                let isSelected = viewModel.tipoSeleccionado == tipo
                                 Text(tipo)
                                     .padding()
-                                    .background(viewModel.tipoSeleccionado == tipo ? Color.blue : Color.gray)
+                                    .background(isSelected ? Color.blue : Color.gray)
                                     .foregroundColor(.white)
                                     .cornerRadius(10)
                             }
@@ -33,9 +34,8 @@ struct ProductosView: View {
                     .padding()
                 }
                 
-                // Lista de cervecerías
                 List{ 
-                    ForEach(viewModel.$cervecerias) { cerveceria in
+                    ForEach(viewModel.cervecerias) { cerveceria in
                         NavigationLink(destination: DetalleCerveceriaView(cerveceria: cerveceria)) {
                             HStack {
                                 VStack(alignment: .leading) {
@@ -43,7 +43,7 @@ struct ProductosView: View {
                                         .font(.headline)
                                     Text(cerveceria.tipo)
                                         .font(.subheadline)
-                                    Text(cerveceria.direccion)
+                                    Text(cerveceria.direccion_1 ?? "")
                                         .font(.subheadline)
                                     Text(cerveceria.estado)
                                         .font(.subheadline)

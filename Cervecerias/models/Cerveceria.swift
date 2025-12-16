@@ -11,9 +11,9 @@ struct Cerveceria: Identifiable, Codable {
     let id: String
     let nombre: String
     let tipo: String
-    let direccion_1: String
-    let direccion_2: String
-    let direccion_3: String
+    let direccion_1: String?
+    let direccion_2: String?
+    let direccion_3: String?
     let estado: String
 
     enum CodingKeys: String, CodingKey {
