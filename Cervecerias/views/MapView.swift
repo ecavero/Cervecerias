@@ -1,3 +1,6 @@
+import SwiftUI
+import GoogleMaps
+
 struct MapaView: View {
     let latitud: Double
     let longitud: Double
@@ -23,7 +26,7 @@ struct GoogleMapView: UIViewRepresentable {
         return mapView
     }
     
-    func updateUIView(_ uiView: GMSMapView, context: Context) {
-        // Actualizar la vista si es necesario
+    func updateUIView(_ mapView: GMSMapView, context: Context) {
+        
     }
 }
