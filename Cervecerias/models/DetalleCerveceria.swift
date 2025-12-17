@@ -9,6 +9,8 @@ struct DetalleCerveceria: Codable {
     let pais: String
     let telefono: String?
     let urlSitio: String?
+    let latitud: Double
+    let longitud: Double
     
     enum CodingKeys: String, CodingKey {
         case nombre = "name"
@@ -20,5 +22,7 @@ struct DetalleCerveceria: Codable {
         case pais = "country"
         case telefono = "phone"
         case urlSitio = "website_url"
+        case latitud = "latitude"
+        case longitud = "longitude"
     }
 }

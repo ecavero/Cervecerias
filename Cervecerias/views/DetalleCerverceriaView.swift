@@ -14,6 +14,7 @@ struct DetalleCerveceriaView: View {
     @State private var isLoading = true
     @State private var errorMessage: String?
     @State private var esFavorito: Bool = false
+    @State private var mostrarMapa: Bool = false
     
     @Environment(\.modelContext) var modelContext
     
@@ -56,6 +57,19 @@ struct DetalleCerveceriaView: View {
                             Link("Sitio Web", destination: URL(string: url)!)
                                 .font(.body)
                                 .foregroundColor(.blue)
+                        }
+
+                        Button(action: {
+                            mostrarMapa.toggle()
+                        }) {
+                            Text("Ver Ubicación")
+                                .padding()
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
+                        .sheet(isPresented: $mostrarMapa) {
+                            MapaView(latitud: detalle.latitud, longitud: detalle.longitud)
                         }
                     }
                     .padding()
