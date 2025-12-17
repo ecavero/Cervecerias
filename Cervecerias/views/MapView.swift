@@ -4,10 +4,28 @@ import GoogleMaps
 struct MapaView: View {
     let latitud: Double
     let longitud: Double
+
+    @Environment(\.presentationMode) var presentationMode
+
     
     var body: some View {
-        GoogleMapView(latitud: latitud, longitud: longitud)
-            .edgesIgnoringSafeArea(.all)
+        VStack {
+            HStack {
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    Text("Cerrar")
+                        .padding()
+                        .background(Color.red)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }   
+                Spacer()
+            }
+            .padding()
+            GoogleMapView(latitud: latitud, longitud: longitud)
+                .edgesIgnoringSafeArea(.all)
+        }
     }
 }
 struct GoogleMapView: UIViewRepresentable {
